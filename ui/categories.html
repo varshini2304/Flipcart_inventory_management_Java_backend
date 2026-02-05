@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Category Management - Inventory System</title>
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/layout.css">
+    <link rel="stylesheet" href="css/table.css">
+    <link rel="stylesheet" href="css/form.css">
+</head>
+
+<body>
+    <div class="layout">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <h2>Inventory</h2>
+            </div>
+            <nav class="sidebar-nav">
+                <a href="index.html" class="nav-link">
+                    <span class="icon">📊</span> Dashboard
+                </a>
+                <a href="categories.html" class="nav-link active">
+                    <span class="icon">📁</span> Categories
+                </a>
+                <a href="products.html" class="nav-link">
+                    <span class="icon">📦</span> Products
+                </a>
+                <a href="#" class="nav-link disabled">
+                    <span class="icon">📈</span> Inventory Overview
+                </a>
+                <a href="#" class="nav-link disabled">
+                    <span class="icon">⚙️</span> Settings
+                </a>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Top Navigation -->
+            <header class="top-nav">
+                <div class="nav-left">
+                    <button class="menu-toggle" id="menuToggle">☰</button>
+                    <h1>Category Management</h1>
+                </div>
+                <div class="nav-right">
+                    <button class="btn btn-primary" id="addCategoryBtn">
+                        <span class="icon">➕</span> Add Category
+                    </button>
+                    <div class="user-info">
+                        <span>Admin</span>
+                        <span class="avatar">👤</span>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Content -->
+            <div class="content">
+                <div class="section">
+                    <div class="section-header">
+                        <h2 class="section-title">Categories</h2>
+                        <div class="section-actions">
+                            <input type="text" id="searchInput" placeholder="Search categories..." class="form-control"
+                                style="width: 250px;">
+                            <button class="btn btn-secondary" id="refreshBtn">
+                                <span class="icon">🔄</span> Refresh
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="table-container">
+                        <table class="data-table" id="categoriesTable">
+                            <thead>
+                                <tr>
+                                    <th class="sortable" data-sort="name">Category Name</th>
+                                    <th>Description</th>
+                                    <th class="sortable" data-sort="productCount">Product Count</th>
+                                    <th>Created Date</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="categoriesTableBody">
+                                <!-- Categories will be loaded here -->
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- Pagination -->
+                    <div class="table-pagination" id="paginationContainer" style="display: none;">
+                        <div class="pagination-info" id="paginationInfo"></div>
+                        <div class="pagination-controls">
+                            <button class="pagination-btn" id="prevPageBtn" disabled>Previous</button>
+                            <span id="pageNumbers"></span>
+                            <button class="pagination-btn" id="nextPageBtn" disabled>Next</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Add Category Modal -->
+    <div id="addCategoryModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Add New Category</h3>
+                <button class="modal-close" id="closeAddModal">&times;</button>
+            </div>
+            <form id="addCategoryForm">
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="categoryName" class="form-label">Category Name *</label>
+                        <input type="text" id="categoryName" name="name" class="form-control" required>
+                        <div class="error-message" id="nameError"></div>
+                    </div>
+                    <div class="form-group">
+                        <label for="categoryDescription" class="form-label">Description</label>
+                        <textarea id="categoryDescription" name="description" class="form-control" rows="3"></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" id="cancelAddBtn">Cancel</button>
+                    <button type="submit" class="btn btn-primary" id="submitAddBtn">Add Category</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Edit Category Modal -->
+    <div id="editCategoryModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Edit Category</h3>
+                <button class="modal-close" id="closeEditModal">&times;</button>
+            </div>
+            <form id="editCategoryForm">
+                <input type="hidden" id="editCategoryId" name="id">
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="editCategoryName" class="form-label">Category Name *</label>
+                        <input type="text" id="editCategoryName" name="name" class="form-control" required>
+                        <div class="error-message" id="editNameError"></div>
+                    </div>
+                    <div class="form-group">
+                        <label for="editCategoryDescription" class="form-label">Description</label>
+                        <textarea id="editCategoryDescription" name="description" class="form-control"
+                            rows="3"></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" id="cancelEditBtn">Cancel</button>
+                    <button type="submit" class="btn btn-primary" id="submitEditBtn">Update Category</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Toast Notifications -->
+    <div id="toastContainer" class="toast-container"></div>
+
+    <script src="js/api.js"></script>
+    <script src="js/util.js"></script>
+    <script src="js/categories.js"></script>
+</body>
+
+</html>

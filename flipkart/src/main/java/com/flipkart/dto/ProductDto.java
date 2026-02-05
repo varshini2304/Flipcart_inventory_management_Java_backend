@@ -40,4 +40,7 @@ public class ProductDto {
 
     @NotNull(message = "Category ID cannot be null")
     private Long categoryId;
+
+    @NotNull(message = "image url cannot be null")
+    private String imageUrl;
 }

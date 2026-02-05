@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Management - Inventory System</title>
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/layout.css">
+    <link rel="stylesheet" href="css/table.css">
+    <link rel="stylesheet" href="css/form.css">
+</head>
+<body>
+    <div class="layout">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <h2>Inventory</h2>
+            </div>
+            <nav class="sidebar-nav">
+                <a href="index.html" class="nav-link">
+                    <span class="icon">📊</span> Dashboard
+                </a>
+                <a href="categories.html" class="nav-link">
+                    <span class="icon">📁</span> Categories
+                </a>
+                <a href="products.html" class="nav-link active">
+                    <span class="icon">📦</span> Products
+                </a>
+                <a href="#" class="nav-link disabled">
+                    <span class="icon">📈</span> Inventory Overview
+                </a>
+                <a href="#" class="nav-link disabled">
+                    <span class="icon">⚙️</span> Settings
+                </a>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Top Navigation -->
+            <header class="top-nav">
+                <div class="nav-left">
+                    <button class="menu-toggle" id="menuToggle">☰</button>
+                    <h1>Product Management</h1>
+                </div>
+                <div class="nav-right">
+                    <button class="btn btn-primary" id="addProductBtn">
+                        <span class="icon">➕</span> Add Product
+                    </button>
+                    <div class="user-info">
+                        <span>Admin</span>
+                        <span class="avatar">👤</span>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Content -->
+            <div class="content">
+                <!-- Filters Section -->
+                <div class="section">
+                    <div class="section-header">
+                        <h2 class="section-title">Filters</h2>
+                        <button class="btn btn-secondary" id="clearFiltersBtn">Clear Filters</button>
+                    </div>
+                    <div class="table-filters">
+                        <div class="filter-group">
+                            <label class="filter-label">Search</label>
+                            <input type="text" id="searchInput" placeholder="Search products..." class="filter-control">
+                        </div>
+                        <div class="filter-group">
+                            <label class="filter-label">Category</label>
+                            <select id="categoryFilter" class="filter-control select">
+                                <option value="">All Categories</option>
+                                <!-- Categories will be loaded dynamically -->
+                            </select>
+                        </div>
+                        <div class="filter-group">
+                            <label class="filter-label">Status</label>
+                            <select id="statusFilter" class="filter-control select">
+                                <option value="">All Status</option>
+                                <option value="in_stock">In Stock</option>
+                                <option value="low_stock">Low Stock</option>
+                                <option value="out_of_stock">Out of Stock</option>
+                            </select>
+                        </div>
+                        <div class="filter-group">
+                            <label class="filter-label">Price Range</label>
+                            <div style="display: flex; gap: 0.5rem; align-items: center;">
+                                <input type="number" id="minPrice" placeholder="Min" class="filter-control" style="width: 80px;">
+                                <span>-</span>
+                                <input type="number" id="maxPrice" placeholder="Max" class="filter-control" style="width: 80px;">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Products Table -->
+                <div class="section">
+                    <div class="section-header">
+                        <h2 class="section-title">Products</h2>
+                        <div class="section-actions">
+                            <button class="btn btn-secondary" id="exportBtn">
+                                <span class="icon">📄</span> Export
+                            </button>
+                            <button class="btn btn-secondary" id="refreshBtn">
+                                <span class="icon">🔄</span> Refresh
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="table-container">
+                        <table class="data-table" id="productsTable">
+                            <thead>
+                                <tr>
+                                    <th>Product</th>
+                                    <th class="sortable" data-sort="category">Category</th>
+                                    <th class="sortable" data-sort="price">Price</th>
+                                    <th class="sortable" data-sort="discount">Discount</th>
+                                    <th>Final Price</th>
+                                    <th class="sortable" data-sort="quantity">Quantity</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="productsTableBody">
+                                <!-- Products will be loaded here -->
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- Pagination -->
+                    <div class="table-pagination" id="paginationContainer" style="display: none;">
+                        <div class="pagination-info" id="paginationInfo"></div>
+                        <div class="pagination-controls">
+                            <button class="pagination-btn" id="prevPageBtn" disabled>Previous</button>
+                            <span id="pageNumbers"></span>
+                            <button class="pagination-btn" id="nextPageBtn" disabled>Next</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Bulk Actions Modal -->
+    <div id="bulkActionsModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Bulk Actions</h3>
+                <button class="modal-close" id="closeBulkModal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p id="bulkActionMessage"></p>
+                <div class="form-group">
+                    <label class="form-label">Action</label>
+                    <select id="bulkActionType" class="form-control select">
+                        <option value="delete">Delete Selected Products</option>
+                        <option value="update_status">Update Status</option>
+                        <option value="update_category">Change Category</option>
+                    </select>
+                </div>
+                <div class="form-group" id="bulkStatusGroup" style="display: none;">
+                    <label class="form-label">New Status</label>
+                    <select id="bulkStatus" class="form-control select">
+                        <option value="active">Active</option>
+                        <option value="inactive">Inactive</option>
+                    </select>
+                </div>
+                <div class="form-group" id="bulkCategoryGroup" style="display: none;">
+                    <label class="form-label">New Category</label>
+                    <select id="bulkCategory" class="form-control select">
+                        <!-- Categories will be loaded dynamically -->
+                    </select>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" id="cancelBulkBtn">Cancel</button>
+                <button type="button" class="btn btn-danger" id="confirmBulkBtn">Execute</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notifications -->
+    <div id="toastContainer" class="toast-container"></div>
+
+    <script src="js/api.js"></script>
+    <script src="js/util.js"></script>
+    <script src="js/products.js"></script>
+</body>
+</html>

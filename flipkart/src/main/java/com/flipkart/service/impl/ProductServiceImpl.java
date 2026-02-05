@@ -9,10 +9,17 @@ import com.flipkart.exception.ProductNotFoundException;
 import com.flipkart.repository.CategoryRepository;
 import com.flipkart.repository.ProductRepository;
 import com.flipkart.service.ProductService;
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 @Service
 @RequiredArgsConstructor
@@ -24,7 +31,8 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public ProductDto addProduct(ProductDto productDto) {
         Category category = categoryRepository.findById(productDto.getCategoryId())
-                .orElseThrow(() -> new CategoryNotFoundException("Category not found with id: " + productDto.getCategoryId()));
+                .orElseThrow(() -> new CategoryNotFoundException(
+                        "Category not found with id: " + productDto.getCategoryId()));
 
         Product product = new Product();
         product.setName(productDto.getName());
@@ -33,6 +41,7 @@ public class ProductServiceImpl implements ProductService {
         product.setDiscount(productDto.getDiscount());
         product.setQuantity(productDto.getQuantity());
         product.setCategory(category);
+        product.setImageUrl(productDto.getImageUrl());
 
         if (product.getQuantity() == 0) {
             product.setStatus(ProductStatus.OUT_OF_STOCK);
@@ -61,6 +70,7 @@ public class ProductServiceImpl implements ProductService {
         if (product.getQuantity() == 0) {
             product.setStatus(ProductStatus.OUT_OF_STOCK);
         }
+        product.setImageUrl(productDto.getImageUrl());
 
         Product updatedProduct = productRepository.save(product);
         return mapToDto(updatedProduct);
@@ -74,8 +84,45 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public List<ProductDto> getAllProducts() {
-        return productRepository.findAll().stream()
+    public Page<ProductDto> getAllProducts(Pageable pageable, String search, Long categoryId, String status,
+            BigDecimal minPrice, BigDecimal maxPrice) {
+        Specification<Product> spec = Specification.where(null);
+
+        if (StringUtils.hasText(search)) {
+            String searchPattern = "%" + search.toLowerCase() + "%";
+            spec = spec.and((root, query, cb) -> cb.or(
+                    cb.like(cb.lower(root.get("name")), searchPattern),
+                    cb.like(cb.lower(root.get("description")), searchPattern)));
+        }
+
+        if (categoryId != null) {
+            spec = spec.and((root, query, cb) -> cb.equal(root.get("category").get("id"), categoryId));
+        }
+
+        if (StringUtils.hasText(status)) {
+            try {
+                ProductStatus productStatus = ProductStatus.valueOf(status.toUpperCase());
+                spec = spec.and((root, query, cb) -> cb.equal(root.get("status"), productStatus));
+            } catch (IllegalArgumentException e) {
+                // Ignore invalid status
+            }
+        }
+
+        if (minPrice != null) {
+            spec = spec.and((root, query, cb) -> cb.greaterThanOrEqualTo(root.get("price"), minPrice.doubleValue()));
+        }
+
+        if (maxPrice != null) {
+            spec = spec.and((root, query, cb) -> cb.lessThanOrEqualTo(root.get("price"), maxPrice.doubleValue()));
+        }
+
+        return productRepository.findAll(spec, pageable).map(this::mapToDto);
+    }
+
+    @Override
+    public List<ProductDto> getRecentProducts(int limit) {
+        Pageable pageable = PageRequest.of(0, limit, Sort.by(Sort.Direction.DESC, "id"));
+        return productRepository.findAll(pageable).getContent().stream()
                 .map(this::mapToDto)
                 .collect(Collectors.toList());
     }
@@ -107,6 +154,7 @@ public class ProductServiceImpl implements ProductService {
         productDto.setQuantity(product.getQuantity());
         productDto.setStatus(product.getStatus());
         productDto.setCategoryId(product.getCategory().getId());
+        productDto.setImageUrl(product.getImageUrl());
         return productDto;
     }
 }

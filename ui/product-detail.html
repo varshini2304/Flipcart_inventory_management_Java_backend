@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Details - Inventory System</title>
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/layout.css">
+    <link rel="stylesheet" href="css/form.css">
+</head>
+
+<body>
+    <div class="layout">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <h2>Inventory</h2>
+            </div>
+            <nav class="sidebar-nav">
+                <a href="index.html" class="nav-link">
+                    <span class="icon">📊</span> Dashboard
+                </a>
+                <a href="categories.html" class="nav-link">
+                    <span class="icon">📁</span> Categories
+                </a>
+                <a href="products.html" class="nav-link active">
+                    <span class="icon">📦</span> Products
+                </a>
+                <a href="#" class="nav-link disabled">
+                    <span class="icon">📈</span> Inventory Overview
+                </a>
+                <a href="#" class="nav-link disabled">
+                    <span class="icon">⚙️</span> Settings
+                </a>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Top Navigation -->
+            <header class="top-nav">
+                <div class="nav-left">
+                    <button class="menu-toggle" id="menuToggle">☰</button>
+                    <h1>Product Details</h1>
+                </div>
+                <div class="nav-right">
+                    <button class="btn btn-secondary" onclick="window.location.href='products.html'">
+                        <span class="icon">⬅️</span> Back to Products
+                    </button>
+                    <button class="btn btn-primary" id="editProductBtn">
+                        <span class="icon">✏️</span> Edit Product
+                    </button>
+                    <div class="user-info">
+                        <span>Admin</span>
+                        <span class="avatar">👤</span>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Content -->
+            <div class="content">
+                <!-- Loading State -->
+                <div id="loadingState" class="dashboard-loading" style="display: none;">
+                    <div class="spinner"></div>
+                    <p>Loading product details...</p>
+                </div>
+
+                <!-- Error State -->
+                <div id="errorState" class="empty-state" style="display: none;">
+                    <div class="icon">❌</div>
+                    <h3>Product Not Found</h3>
+                    <p>The product you're looking for doesn't exist or has been deleted.</p>
+                    <a href="products.html" class="btn btn-primary">Back to Products</a>
+                </div>
+
+                <!-- Product Details -->
+                <div id="productDetails" style="display: none;">
+                    <!-- Product Header -->
+                    <div class="section">
+                        <div class="product-header">
+                            <div class="product-image">
+                                <img id="productImage" src="/assets/icons/product-placeholder.png" alt="Product Image"
+                                    onerror="this.src='/assets/icons/product-placeholder.png'">
+                            </div>
+                            <div class="product-summary">
+                                <h1 id="productName">Product Name</h1>
+                                <p id="productDescription" class="product-description">Product description will appear
+                                    here.</p>
+                                <div class="product-meta">
+                                    <span class="meta-item">
+                                        <strong>Category:</strong> <span id="productCategory">N/A</span>
+                                    </span>
+                                    <span class="meta-item">
+                                        <strong>Status:</strong> <span id="productStatus"
+                                            class="status-badge">Active</span>
+                                    </span>
+                                    <span class="meta-item">
+                                        <strong>ID:</strong> <span id="productId">#123</span>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Pricing & Inventory -->
+                    <div class="grid grid-2">
+                        <!-- Pricing Card -->
+                        <div class="card">
+                            <div class="card-header">
+                                <h3 class="card-title">Pricing Information</h3>
+                            </div>
+                            <div class="card-body">
+                                <div class="pricing-breakdown">
+                                    <div class="price-row">
+                                        <span class="price-label">Original Price:</span>
+                                        <span id="originalPrice" class="price">₹0.00</span>
+                                    </div>
+                                    <div class="price-row">
+                                        <span class="price-label">Discount:</span>
+                                        <span id="discountAmount">0%</span>
+                                    </div>
+                                    <div class="price-row final-price">
+                                        <span class="price-label">Final Price:</span>
+                                        <span id="finalPrice" class="price final">₹0.00</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Inventory Card -->
+                        <div class="card">
+                            <div class="card-header">
+                                <h3 class="card-title">Inventory Status</h3>
+                            </div>
+                            <div class="card-body">
+                                <div class="inventory-status">
+                                    <div class="status-row">
+                                        <span class="status-label">Current Stock:</span>
+                                        <div class="status-indicator-wrapper">
+                                            <span id="stockQuantity" class="status-indicator in-stock">0</span>
+                                        </div>
+                                    </div>
+                                    <div class="status-row">
+                                        <span class="status-label">Stock Status:</span>
+                                        <span id="stockStatusText" class="stock-status-text">In Stock</span>
+                                    </div>
+                                    <div class="status-row">
+                                        <span class="status-label">Low Stock Threshold:</span>
+                                        <span class="threshold-text">5 units</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Product Metadata -->
+                    <div class="section">
+                        <div class="card">
+                            <div class="card-header">
+                                <h3 class="card-title">Product Information</h3>
+                            </div>
+                            <div class="card-body">
+                                <div class="metadata-grid">
+                                    <div class="metadata-item">
+                                        <strong>Created Date:</strong>
+                                        <span id="createdDate">N/A</span>
+                                    </div>
+                                    <div class="metadata-item">
+                                        <strong>Last Updated:</strong>
+                                        <span id="updatedDate">N/A</span>
+                                    </div>
+                                    <div class="metadata-item">
+                                        <strong>Created By:</strong>
+                                        <span id="createdBy">System</span>
+                                    </div>
+                                    <div class="metadata-item">
+                                        <strong>Product SKU:</strong>
+                                        <span id="productSku">N/A</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Quick Actions -->
+                    <div class="section">
+                        <div class="card">
+                            <div class="card-header">
+                                <h3 class="card-title">Quick Actions</h3>
+                            </div>
+                            <div class="card-body">
+                                <div class="quick-actions">
+                                    <button class="btn btn-primary" id="editProductBtnBottom">
+                                        <span class="icon">✏️</span> Edit Product
+                                    </button>
+                                    <button class="btn btn-secondary" id="duplicateProductBtn">
+                                        <span class="icon">📋</span> Duplicate Product
+                                    </button>
+                                    <button class="btn btn-danger" id="deleteProductBtn">
+                                        <span class="icon">🗑️</span> Delete Product
+                                    </button>
+                                    <button class="btn btn-secondary" id="printProductBtn">
+                                        <span class="icon">🖨️</span> Print Details
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Delete Confirmation Modal -->
+    <div id="deleteModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Delete Product</h3>
+                <button class="modal-close" id="closeDeleteModal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to delete "<span id="deleteProductName"></span>"?</p>
+                <p class="warning-text">This action cannot be undone. All product data will be permanently removed.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" id="cancelDeleteBtn">Cancel</button>
+                <button type="button" class="btn btn-danger" id="confirmDeleteBtn">Delete Product</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notifications -->
+    <div id="toastContainer" class="toast-container"></div>
+
+    <script src="js/api.js"></script>
+    <script src="js/util.js"></script>
+    <script src="js/product-detail.js"></script>
+</body>
+
+</html>

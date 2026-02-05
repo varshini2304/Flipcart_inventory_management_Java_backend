@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Product - Inventory System</title>
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/layout.css">
+    <link rel="stylesheet" href="css/form.css">
+</head>
+
+<body>
+    <div class="layout">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <h2>Inventory</h2>
+            </div>
+            <nav class="sidebar-nav">
+                <a href="index.html" class="nav-link">
+                    <span class="icon">📊</span> Dashboard
+                </a>
+                <a href="categories.html" class="nav-link">
+                    <span class="icon">📁</span> Categories
+                </a>
+                <a href="products.html" class="nav-link active">
+                    <span class="icon">📦</span> Products
+                </a>
+                <a href="#" class="nav-link disabled">
+                    <span class="icon">📈</span> Inventory Overview
+                </a>
+                <a href="#" class="nav-link disabled">
+                    <span class="icon">⚙️</span> Settings
+                </a>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Top Navigation -->
+            <header class="top-nav">
+                <div class="nav-left">
+                    <button class="menu-toggle" id="menuToggle">☰</button>
+                    <h1>Add Product</h1>
+                </div>
+                <div class="nav-right">
+                    <button class="btn btn-secondary" onclick="window.location.href='products.html'">
+                        <span class="icon">⬅️</span> Back to Products
+                    </button>
+                    <div class="user-info">
+                        <span>Admin</span>
+                        <span class="avatar">👤</span>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Content -->
+            <div class="content">
+                <div class="form-container">
+                    <form id="addProductForm" enctype="multipart/form-data">
+                        <!-- Basic Information -->
+                        <div class="form-section">
+                            <h2 class="form-section-title">Basic Information</h2>
+
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="productName" class="form-label required">Product Name</label>
+                                    <input type="text" id="productName" name="name" class="form-control" required>
+                                    <div class="error-message" id="nameError"></div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="productCategory" class="form-label required">Category</label>
+                                    <select id="productCategory" name="categoryId" class="form-control select" required>
+                                        <option value="">Select Category</option>
+                                        <!-- Categories will be loaded dynamically -->
+                                    </select>
+                                    <div class="error-message" id="categoryError"></div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="productDescription" class="form-label">Description</label>
+                                <textarea id="productDescription" name="description" class="form-control textarea"
+                                    rows="4"></textarea>
+                            </div>
+                        </div>
+
+                        <!-- Pricing Information -->
+                        <div class="form-section">
+                            <h2 class="form-section-title">Pricing Information</h2>
+
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="productPrice" class="form-label required">Price (₹)</label>
+                                    <input type="number" id="productPrice" name="price" class="form-control" min="0"
+                                        step="0.01" required>
+                                    <div class="error-message" id="priceError"></div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="productDiscount" class="form-label">Discount (%)</label>
+                                    <input type="number" id="productDiscount" name="discount" class="form-control"
+                                        min="0" max="100" step="0.1" value="0">
+                                    <div class="error-message" id="discountError"></div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">Final Price</label>
+                                <div class="price-display">
+                                    <span class="price final" id="finalPrice">₹0.00</span>
+                                    <small class="field-hint">Calculated automatically based on price and
+                                        discount</small>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Inventory Information -->
+                        <div class="form-section">
+                            <h2 class="form-section-title">Inventory Information</h2>
+
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="productQuantity" class="form-label required">Quantity</label>
+                                    <input type="number" id="productQuantity" name="quantity" class="form-control"
+                                        min="0" required>
+                                    <div class="error-message" id="quantityError"></div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="productStatus" class="form-label">Status</label>
+                                    <select id="productStatus" name="status" class="form-control select">
+                                        <option value="active">Active</option>
+                                        <option value="inactive">Inactive</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="status-indicator-preview">
+                                    <label class="form-label">Stock Status Preview</label>
+                                    <div id="stockStatusPreview" class="status-indicator in-stock">0</div>
+                                    <small class="field-hint">Status updates automatically based on quantity</small>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Media -->
+                        <div class="form-section">
+                            <h2 class="form-section-title">Product Image</h2>
+
+                            <div class="form-group">
+                                <label for="productImage" class="form-label">Upload Image</label>
+                                <input type="file" id="productImage" name="image" class="form-file-input"
+                                    accept="image/*">
+                                <label for="productImage" class="form-file-label">
+                                    <span class="icon">📁</span> Choose Image
+                                </label>
+                                <div class="form-file-preview" id="imagePreview" style="display: none;">
+                                    <img id="previewImg" src="" alt="Preview">
+                                </div>
+                                <small class="field-hint">Supported formats: JPG, PNG, GIF. Max size: 5MB</small>
+                            </div>
+                        </div>
+
+                        <!-- Form Actions -->
+                        <div class="form-actions">
+                            <button type="button" class="btn btn-secondary"
+                                onclick="window.location.href='products.html'">Cancel</button>
+                            <button type="submit" class="btn btn-primary" id="submitBtn">Add Product</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Toast Notifications -->
+    <div id="toastContainer" class="toast-container"></div>
+
+    <script src="js/api.js"></script>
+    <script src="js/util.js"></script>
+    <script src="js/product-form.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inventory Management Dashboard</title>
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/layout.css">
+    <link rel="stylesheet" href="css/dashboard.css">
+    <link rel="stylesheet" href="css/table.css">
+</head>
+
+<body>
+    <div class="layout">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <h2>Inventory</h2>
+            </div>
+            <nav class="sidebar-nav">
+                <a href="index.html" class="nav-link active">
+                    <span class="icon">📊</span> Dashboard
+                </a>
+                <a href="categories.html" class="nav-link">
+                    <span class="icon">📁</span> Categories
+                </a>
+                <a href="products.html" class="nav-link">
+                    <span class="icon">📦</span> Products
+                </a>
+                <a href="#" class="nav-link disabled">
+                    <span class="icon">📈</span> Inventory Overview
+                </a>
+                <a href="#" class="nav-link disabled">
+                    <span class="icon">⚙️</span> Settings
+                </a>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Top Navigation -->
+            <header class="top-nav">
+                <div class="nav-left">
+                    <button class="menu-toggle" id="menuToggle">☰</button>
+                    <h1>Dashboard</h1>
+                </div>
+                <div class="nav-right">
+                    <div class="user-info">
+                        <span>Admin</span>
+                        <span class="avatar">👤</span>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Dashboard Content -->
+            <div class="dashboard-content">
+                <!-- KPI Cards -->
+                <div class="kpi-grid">
+                    <div class="kpi-card">
+                        <div class="kpi-icon">📦</div>
+                        <div class="kpi-data">
+                            <h3 id="totalProducts">0</h3>
+                            <p>Total Products</p>
+                        </div>
+                    </div>
+                    <div class="kpi-card">
+                        <div class="kpi-icon">📁</div>
+                        <div class="kpi-data">
+                            <h3 id="totalCategories">0</h3>
+                            <p>Total Categories</p>
+                        </div>
+                    </div>
+                    <div class="kpi-card warning">
+                        <div class="kpi-icon">⚠️</div>
+                        <div class="kpi-data">
+                            <h3 id="outOfStock">0</h3>
+                            <p>Out of Stock</p>
+                        </div>
+                    </div>
+                    <div class="kpi-card alert">
+                        <div class="kpi-icon">🔴</div>
+                        <div class="kpi-data">
+                            <h3 id="lowStock">0</h3>
+                            <p>Low Stock</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Recent Products Table -->
+                <div class="recent-products">
+                    <div class="section-header">
+                        <h2>Recent Products</h2>
+                        <a href="products.html" class="view-all">View All</a>
+                    </div>
+                    <div class="table-container">
+                        <table class="data-table" id="recentProductsTable">
+                            <thead>
+                                <tr>
+                                    <th>Product Name</th>
+                                    <th>Category</th>
+                                    <th>Price</th>
+                                    <th>Quantity</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="recentProductsBody">
+                                <!-- Data will be populated by JavaScript -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Toast Notifications -->
+    <div id="toastContainer" class="toast-container"></div>
+
+    <script src="js/api.js"></script>
+    <script src="js/util.js"></script>
+    <script src="js/dashboard.js"></script>
+</body>
+
+</html>
