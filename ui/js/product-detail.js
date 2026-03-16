@@ -1,4 +1,4 @@
-// Product Detail JavaScript - Handles product detail page
+﻿// Product Detail JavaScript - Handles product detail page
 
 document.addEventListener('DOMContentLoaded', function() {
     initializeProductDetail();
@@ -120,7 +120,7 @@ async function loadProductDetails(productId) {
  */
 function renderProductDetails(product) {
     // Product header
-    document.getElementById('productImage').src = product.imageUrl || '/assets/icons/product-placeholder.png';
+    document.getElementById('productImage').src = product.imageUrl || '/assets/icons/product-placeholder.svg';
     document.getElementById('productName').textContent = product.name || 'Unnamed Product';
     document.getElementById('productDescription').textContent = product.description || 'No description available.';
     document.getElementById('productCategory').textContent = product.category?.name || 'Uncategorized';
@@ -305,3 +305,4 @@ window.ProductDetail = {
     delete: deleteProduct,
     duplicate: duplicateProduct
 };
+

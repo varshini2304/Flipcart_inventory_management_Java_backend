@@ -1,4 +1,4 @@
-// Dashboard JavaScript - Handles dashboard functionality
+﻿// Dashboard JavaScript - Handles dashboard functionality
 
 document.addEventListener('DOMContentLoaded', function() {
     initializeDashboard();
@@ -113,7 +113,7 @@ function renderRecentProducts(products) {
         <tr>
             <td>
                 <div class="table-cell">
-                    <img src="${product.imageUrl || '/assets/icons/product-placeholder.png'}" alt="${product.name}" onerror="this.src='/assets/icons/product-placeholder.png'">
+                    <img src="${product.imageUrl || '/assets/icons/product-placeholder.svg'}" alt="${product.name}" onerror="this.src='/assets/icons/product-placeholder.svg'">
                     <div class="text">
                         <strong>${product.name}</strong>
                         <small>ID: ${product.id}</small>
@@ -215,3 +215,4 @@ window.Dashboard = {
     loadStats: loadDashboardStats,
     loadRecentProducts: loadRecentProducts
 };
+

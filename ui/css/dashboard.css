@@ -16,19 +16,22 @@
 }
 
 .kpi-card {
-  background-color: var(--bg-color);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.98), rgba(245, 243, 239, 0.8));
   border-radius: var(--border-radius-lg);
   padding: 1.5rem;
   box-shadow: var(--shadow);
   transition: var(--transition);
-  border-left: 4px solid var(--primary-color);
+  border-left: 6px solid var(--primary-color);
   display: flex;
   align-items: center;
   gap: 1rem;
+  position: relative;
+  overflow: hidden;
+  animation: fadeInUp 0.45s ease both;
 }
 
 .kpi-card:hover {
-  transform: translateY(-2px);
+  transform: translateY(-4px);
   box-shadow: var(--shadow-lg);
 }
 
@@ -43,9 +46,17 @@
 .kpi-icon {
   font-size: 2.5rem;
   opacity: 0.8;
+  background-color: rgba(11, 122, 117, 0.12);
+  width: 54px;
+  height: 54px;
+  border-radius: 14px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .kpi-data h3 {
+  font-family: var(--font-display);
   font-size: 2rem;
   font-weight: 700;
   margin: 0;
@@ -62,10 +73,11 @@
 
 /* Recent Products Section */
 .recent-products {
-  background-color: var(--bg-color);
+  background-color: rgba(255, 255, 255, 0.96);
   border-radius: var(--border-radius-lg);
   padding: 2rem;
   box-shadow: var(--shadow);
+  border: 1px solid rgba(15, 23, 42, 0.06);
 }
 
 .recent-products .section-header {
@@ -83,8 +95,8 @@
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
-  padding: 0.25rem 0.75rem;
-  border-radius: 20px;
+  padding: 0.3rem 0.8rem;
+  border-radius: 999px;
   font-size: 0.75rem;
   font-weight: 500;
   text-transform: uppercase;
@@ -170,8 +182,8 @@
   align-items: center;
   gap: 0.5rem;
   padding: 0.75rem 1.5rem;
-  background-color: var(--bg-color);
-  border: 1px solid var(--border-color);
+  background-color: rgba(255, 255, 255, 0.96);
+  border: 1px solid rgba(15, 23, 42, 0.08);
   border-radius: var(--border-radius);
   color: var(--text-color);
   font-weight: 500;
@@ -179,9 +191,11 @@
 }
 
 .quick-action-btn:hover {
-  background-color: var(--bg-light);
+  background-color: var(--bg-soft);
   border-color: var(--primary-color);
   color: var(--primary-color);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow);
 }
 
 .quick-action-btn .icon {

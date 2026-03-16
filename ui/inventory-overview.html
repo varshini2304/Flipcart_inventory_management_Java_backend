@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inventory Overview</title>
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/layout.css">
+    <link rel="stylesheet" href="css/dashboard.css">
+    <link rel="stylesheet" href="css/table.css">
+</head>
+
+<body>
+    <div class="layout">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <h2>Inventory</h2>
+            </div>
+            <nav class="sidebar-nav">
+                <a href="index.html" class="nav-link">
+                    <span class="icon">📊</span> Dashboard
+                </a>
+                <a href="categories.html" class="nav-link">
+                    <span class="icon">📁</span> Categories
+                </a>
+                <a href="products.html" class="nav-link">
+                    <span class="icon">📦</span> Products
+                </a>
+                <a href="inventory-overview.html" class="nav-link active">
+                    <span class="icon">📈</span> Inventory Overview
+                </a>
+                <a href="settings.html" class="nav-link">
+                    <span class="icon">⚙️</span> Settings
+                </a>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Top Navigation -->
+            <header class="top-nav">
+                <div class="nav-left">
+                    <button class="menu-toggle" id="menuToggle">☰</button>
+                    <h1>Inventory Overview</h1>
+                </div>
+                <div class="nav-right">
+                    <button class="btn btn-secondary" onclick="window.location.href='products.html'">
+                        <span class="icon">📦</span> View Products
+                    </button>
+                    <div class="user-info">
+                        <span>Admin</span>
+                        <span class="avatar">👤</span>
+                    </div>
+                </div>
+            </header>
+
+            <div class="content">
+                <div class="page-header">
+                    <h2 class="page-title">Stock Health & Performance</h2>
+                    <p class="page-subtitle">Track velocity, risk, and coverage across your catalog.</p>
+                </div>
+
+                <div class="kpi-grid">
+                    <div class="kpi-card">
+                        <div class="kpi-icon">📦</div>
+                        <div class="kpi-data">
+                            <h3 id="invItemsTracked">0</h3>
+                            <p>Items Tracked</p>
+                        </div>
+                    </div>
+                    <div class="kpi-card warning">
+                        <div class="kpi-icon">⚠️</div>
+                        <div class="kpi-data">
+                            <h3 id="invLowStock">0</h3>
+                            <p>Low Stock</p>
+                        </div>
+                    </div>
+                    <div class="kpi-card alert">
+                        <div class="kpi-icon">⛔</div>
+                        <div class="kpi-data">
+                            <h3 id="invOutOfStock">0</h3>
+                            <p>Out of Stock</p>
+                        </div>
+                    </div>
+                    <div class="kpi-card">
+                        <div class="kpi-icon">🚚</div>
+                        <div class="kpi-data">
+                            <h3 id="invAvgStock">0</h3>
+                            <p>Avg Stock / Item</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="grid grid-2">
+                    <section class="section">
+                        <div class="section-header">
+                            <h3 class="section-title">Stock Risk Radar</h3>
+                            <span class="view-all">Last 30 days</span>
+                        </div>
+                        <div class="chart-container">
+                            <span class="placeholder-text">Risk distribution chart</span>
+                        </div>
+                        <div class="status-indicator in-stock">Healthy: 68%</div>
+                        <div class="status-indicator low-stock">Watchlist: 22%</div>
+                        <div class="status-indicator out-of-stock">Critical: 10%</div>
+                    </section>
+
+                    <section class="section">
+                        <div class="section-header">
+                            <h3 class="section-title">Fast Movers</h3>
+                            <a class="view-all" href="products.html">Review list</a>
+                        </div>
+                        <div class="table-container">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>Product</th>
+                                        <th>Category</th>
+                                        <th>Stock</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="fastMoversBody"></tbody>
+                            </table>
+                        </div>
+                    </section>
+                </div>
+
+                <section class="section">
+                    <div class="section-header">
+                        <h3 class="section-title">Category Coverage</h3>
+                        <span class="view-all">Weekly snapshot</span>
+                    </div>
+                    <div class="table-container">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Category</th>
+                                    <th>SKUs</th>
+                                    <th>Low Stock</th>
+                                    <th>Avg Stock</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody id="categoryCoverageBody"></tbody>
+                        </table>
+                    </div>
+                </section>
+            </div>
+        </main>
+    </div>
+
+    <div id="toastContainer" class="toast-container"></div>
+
+    <script src="js/api.js"></script>
+    <script src="js/util.js"></script>
+    <script src="js/inventory-overview.js"></script>
+    <script>
+        const menuToggle = document.getElementById('menuToggle');
+        const sidebar = document.querySelector('.sidebar');
+        if (menuToggle && sidebar) {
+            menuToggle.addEventListener('click', () => sidebar.classList.toggle('show'));
+        }
+    </script>
+</body>
+
+</html>

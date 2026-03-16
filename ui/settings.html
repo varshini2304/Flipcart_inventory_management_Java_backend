@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Settings</title>
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/layout.css">
+    <link rel="stylesheet" href="css/form.css">
+</head>
+
+<body>
+    <div class="layout">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <h2>Inventory</h2>
+            </div>
+            <nav class="sidebar-nav">
+                <a href="index.html" class="nav-link">
+                    <span class="icon">📊</span> Dashboard
+                </a>
+                <a href="categories.html" class="nav-link">
+                    <span class="icon">📁</span> Categories
+                </a>
+                <a href="products.html" class="nav-link">
+                    <span class="icon">📦</span> Products
+                </a>
+                <a href="inventory-overview.html" class="nav-link">
+                    <span class="icon">📈</span> Inventory Overview
+                </a>
+                <a href="settings.html" class="nav-link active">
+                    <span class="icon">⚙️</span> Settings
+                </a>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Top Navigation -->
+            <header class="top-nav">
+                <div class="nav-left">
+                    <button class="menu-toggle" id="menuToggle">☰</button>
+                    <h1>Settings</h1>
+                </div>
+                <div class="nav-right">
+                    <div class="user-info">
+                        <span>Admin</span>
+                        <span class="avatar">👤</span>
+                    </div>
+                </div>
+            </header>
+
+            <div class="content">
+                <div class="page-header">
+                    <h2 class="page-title">Workspace Preferences</h2>
+                    <p class="page-subtitle">Tune your inventory workflow, notifications, and data policies.</p>
+                </div>
+
+                <div class="form-container">
+                    <div class="form-section">
+                        <h3 class="form-section-title">Profile</h3>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label class="form-label required">Display Name</label>
+                                <input class="form-control" type="text" value="Admin">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label required">Email</label>
+                                <input class="form-control" type="email" value="admin@inventory.local">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Role</label>
+                            <input class="form-control" type="text" value="Operations Manager" disabled>
+                        </div>
+                    </div>
+
+                    <div class="form-section">
+                        <h3 class="form-section-title">System Defaults</h3>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label class="form-label">Low Stock Threshold</label>
+                                <input class="form-control" type="number" value="5">
+                                <small class="field-hint">Used to highlight critical items in lists.</small>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Currency</label>
+                                <select class="form-control select">
+                                    <option selected>INR (₹)</option>
+                                    <option>USD ($)</option>
+                                    <option>EUR (€)</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Default Sort</label>
+                            <select class="form-control select">
+                                <option selected>Newest first</option>
+                                <option>Alphabetical</option>
+                                <option>Stock descending</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-section">
+                        <h3 class="form-section-title">Notifications</h3>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" checked>
+                            <label class="form-check-label">Email alerts for low stock</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" checked>
+                            <label class="form-check-label">Daily inventory summary</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox">
+                            <label class="form-check-label">Weekly performance insights</label>
+                        </div>
+                    </div>
+
+                    <div class="form-section">
+                        <h3 class="form-section-title">Data & Security</h3>
+                        <div class="form-group">
+                            <label class="form-label">API Base URL</label>
+                            <input class="form-control" type="text" value="http://localhost:8080/api">
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label class="form-label">Export Format</label>
+                                <select class="form-control select">
+                                    <option selected>CSV</option>
+                                    <option>Excel</option>
+                                    <option>JSON</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Retention Policy</label>
+                                <select class="form-control select">
+                                    <option>30 Days</option>
+                                    <option selected>90 Days</option>
+                                    <option>180 Days</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-section">
+                        <h3 class="form-section-title">Danger Zone</h3>
+                        <p class="field-hint">These actions are permanent. Proceed carefully.</p>
+                        <div class="form-actions form-actions-between">
+                            <button class="btn btn-secondary">Reset Drafts</button>
+                            <button class="btn btn-danger">Archive All Discontinued</button>
+                        </div>
+                    </div>
+
+                    <div class="form-actions">
+                        <button class="btn btn-secondary">Cancel</button>
+                        <button class="btn btn-primary">Save Changes</button>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        const menuToggle = document.getElementById('menuToggle');
+        const sidebar = document.querySelector('.sidebar');
+        if (menuToggle && sidebar) {
+            menuToggle.addEventListener('click', () => sidebar.classList.toggle('show'));
+        }
+    </script>
+</body>
+
+</html>

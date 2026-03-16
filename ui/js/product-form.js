@@ -138,7 +138,7 @@ async function loadProductForEdit() {
 function populateFormWithProductData(product) {
     // Basic information
     document.getElementById('productName').value = product.name || '';
-    document.getElementById('productCategory').value = product.category?.id || '';
+    document.getElementById('productCategory').value = product.categoryId || '';
     document.getElementById('productDescription').value = product.description || '';
 
     // Pricing
@@ -147,7 +147,7 @@ function populateFormWithProductData(product) {
 
     // Inventory
     document.getElementById('productQuantity').value = product.quantity || '';
-    document.getElementById('productStatus').value = product.status || 'active';
+    document.getElementById('productStatus').value = product.status || 'ACTIVE';
 
     // Image preview
     if (product.imageUrl) {
@@ -383,6 +383,20 @@ async function handleFormSubmit(event) {
     }
 
     // Prepare product data
+    const rawStatus = (formData.get('status') || '').toString().trim();
+    let normalizedStatus = rawStatus.toUpperCase();
+    if (normalizedStatus === 'INACTIVE') {
+        normalizedStatus = 'DISCONTINUED';
+    }
+
+    const previewImg = document.getElementById('previewImg');
+    const previewSrc = previewImg ? previewImg.getAttribute('src') : '';
+    let imageUrl = previewSrc ? previewSrc : '/assets/icons/product-placeholder.svg';
+    if (imageUrl.startsWith('data:')) {
+        // Avoid sending base64 data URLs to the backend (will exceed DB column length)
+        imageUrl = '/assets/icons/product-placeholder.svg';
+    }
+
     const productData = {
         name: formData.get('name').trim(),
         categoryId: parseInt(formData.get('categoryId')),
@@ -390,7 +404,8 @@ async function handleFormSubmit(event) {
         price: parseFloat(formData.get('price')),
         discount: parseFloat(formData.get('discount') || 0),
         quantity: parseInt(formData.get('quantity')),
-        status: formData.get('status') || 'active'
+        status: normalizedStatus || 'ACTIVE',
+        imageUrl: imageUrl
     };
 
     // Handle image upload
