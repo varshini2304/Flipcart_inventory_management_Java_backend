@@ -1,260 +1,158 @@
 # Flipkart Inventory Management System
 
-A full-stack web application for managing product inventory with categories, built using **Spring Boot** backend and **HTML/CSS/JavaScript** frontend.
+A full-stack inventory management app with a **Spring Boot + MySQL** backend and a **vanilla HTML/CSS/JS** frontend.
 
-## Project Overview
+## What You Can Do
 
-This inventory management system provides a comprehensive solution for managing products and categories in an e-commerce environment. It features a robust Java Spring Boot REST API backend and an interactive web-based frontend interface.
+- Manage products and categories (CRUD)
+- Track stock levels (low stock / out of stock)
+- View dashboard KPIs + recent products
+- Explore an **Inventory Overview** screen that aggregates product stats
+- Adjust **Settings** (UI-only for now)
 
 ## Tech Stack
 
-### Backend
-- **Framework**: Spring Boot 3.5.10
-- **Language**: Java 17
-- **Database**: MySQL
-- **Build Tool**: Maven
-- **ORM**: Spring Data JPA
-- **Additional Libraries**:
-  - Lombok (for boilerplate reduction)
-  - Spring Boot Validation
-  - Spring Boot Web (REST APIs)
+**Backend**
+- Java 17, Spring Boot 3.5.10
+- Spring Data JPA, Validation
+- MySQL 8+
+- Maven
 
-### Frontend
-- **HTML5** - Structure
-- **CSS3** - Styling
-- **JavaScript** - Interactivity
-- **Vanilla JS** (No framework dependencies)
+**Frontend**
+- HTML, CSS, JavaScript (no framework)
 
 ## Project Structure
 
 ```
-Flipkart_inventory_management_Java_backend/
-├── flipkart/                    # Java Spring Boot Backend
-│   ├── src/                  # Source code
-│   ├── .mvn/wrapper/         # Maven wrapper
-│   ├── pom.xml               # Maven configuration
-│   ├── mvnw                 # Maven wrapper script
-│   └── mvnw.cmd             # Maven wrapper for Windows
-├── ui/                      # Frontend Application
-│   ├── css/                 # Stylesheets
-│   ├── js/                  # JavaScript files
-│   ├── index.html           # Dashboard page
-│   ├── products.html        # Products listing page
-│   ├── categories.html      # Categories page
-│   ├── add-product.html     # Add product form
-│   ├── edit-product.html    # Edit product form
-│   └── product-detail.html  # Product details page
-├── TESTING.md              # API Testing Guide
-├── TODO.md                 # API Endpoints Reference
-└── README.md               # This file
+Flipcart_inventory_management_Java_backend/
+├── flipkart/                 # Spring Boot backend
+│   ├── src/
+│   ├── pom.xml
+│   └── mvnw / mvnw.cmd
+├── ui/                       # Frontend
+│   ├── css/
+│   ├── js/
+│   ├── index.html
+│   ├── products.html
+│   ├── categories.html
+│   ├── add-product.html
+│   ├── edit-product.html
+│   ├── product-detail.html
+│   ├── inventory-overview.html
+│   └── settings.html
+├── TESTING.md
+├── TODO.md
+└── README.md
 ```
 
 ## Getting Started
 
 ### Prerequisites
-- Java 17 or higher
+
+- Java 17+
 - Maven 3.6+
-- MySQL Server 8.0+
-- Modern web browser
+- MySQL 8+
+- A browser or a static server (Live Server / http-server)
 
-### Backend Setup
+### 1) Backend Setup
 
-1. **Navigate to the backend directory**:
-   ```bash
-   cd flipkart
-   ```
+1. Configure MySQL in `flipkart/src/main/resources/application.properties`.
+2. From the project root:
 
-2. **Configure database** (application.properties):
-   - Update MySQL connection details
-   - Set database name, username, and password
+```bash
+cd flipkart
+mvn spring-boot:run
+```
 
-3. **Build the project**:
-   ```bash
-   mvn clean install
-   ```
+Backend runs at `http://localhost:8080`.
 
-4. **Run the application**:
-   ```bash
-   mvn spring-boot:run
-   ```
+### 2) Frontend Setup
 
-   The backend will start on `http://localhost:8080`
+Serve the `ui/` folder using any static server (or Live Server in VS Code).
 
-### Frontend Setup
+Example:
+```bash
+cd ui
+python -m http.server 5500
+```
 
-1. **Navigate to the UI directory**:
-   ```bash
-   cd ui
-   ```
+Open `http://localhost:5500/ui/index.html` (adjust port if needed).
 
-2. **Serve the frontend**:
-   - Use any simple HTTP server or IDE's live server
-   - Example: `python -m http.server 3000` or VS Code Live Server extension
-
-3. **Access the application**:
-   - Open browser and go to `http://localhost:3000` (or configured port)
-
-## API Endpoints
+## API Overview
 
 ### Products
 
-| Method | Endpoint | Description | Parameters |
-|--------|----------|-------------|------------|
-| GET | `/api/products` | Get all products with pagination & filtering | page, size, search, categoryId, status, minPrice, maxPrice, sort |
-| GET | `/api/products/{id}` | Get product by ID | - |
-| GET | `/api/products/category/{categoryId}` | Get products by category | - |
-| GET | `/api/products/recent` | Get recent products | limit |
-| POST | `/api/products` | Create a new product | name, description, price, discount, quantity, categoryId, imageUrl |
-| PUT | `/api/products/{id}` | Update a product | name, description, price, discount, quantity, categoryId, status |
-| DELETE | `/api/products/{id}` | Delete a product | - |
+- `GET /api/products` (pagination + filters)
+- `GET /api/products/{id}`
+- `GET /api/products/category/{categoryId}`
+- `GET /api/products/recent?limit=10`
+- `POST /api/products`
+- `PUT /api/products/{id}`
+- `DELETE /api/products/{id}`
+
+**Product payload**
+```json
+{
+  "name": "Smartphone",
+  "description": "Flagship phone",
+  "price": 999.99,
+  "discount": 5,
+  "quantity": 50,
+  "categoryId": 1,
+  "status": "ACTIVE",
+  "imageUrl": "/assets/icons/product-placeholder.svg"
+}
+```
+
+**Status values**
+- `ACTIVE`
+- `OUT_OF_STOCK`
+- `DISCONTINUED`
 
 ### Categories
 
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| GET | `/api/categories` | Get all categories |
-| GET | `/api/categories/{id}` | Get category by ID |
-| POST | `/api/categories` | Create a new category |
-| PUT | `/api/categories/{id}` | Update a category |
-| DELETE | `/api/categories/{id}` | Delete a category |
+- `GET /api/categories`
+- `GET /api/categories/{id}`
+- `POST /api/categories`
+- `PUT /api/categories/{id}`
+- `DELETE /api/categories/{id}`
 
 ### Dashboard
 
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| GET | `/api/dashboard/stats` | Get dashboard statistics (counts & status) |
+- `GET /api/dashboard/stats`
 
-## Testing
-
-The project includes comprehensive API testing documentation.
-
-### Using cURL
-
-Ensure the backend is running on `http://localhost:8080`.
-
-#### Create a Category
-```bash
-curl -X POST http://localhost:8080/api/categories \
-  -H "Content-Type: application/json" \
-  -d '{"name": "Electronics", "description": "Gadgets and devices"}'
+Returns:
+```json
+{
+  "totalProducts": 0,
+  "totalCategories": 0,
+  "outOfStockProducts": 0,
+  "lowStockProducts": 0
+}
 ```
 
-#### Get All Categories
-```bash
-curl http://localhost:8080/api/categories
-```
+## Inventory Overview (Live Data)
 
-#### Create a Product
-```bash
-curl -X POST http://localhost:8080/api/products \
-  -H "Content-Type: application/json" \
-  -d '{"name": "Smartphone", "description": "Flagship phone", "price": 999.99, "discount": 5.0, "quantity": 50, "categoryId": 1, "imageUrl": ""}'
-```
+`ui/inventory-overview.html` is wired to the backend:
 
-#### Get All Products (with pagination)
-```bash
-curl "http://localhost:8080/api/products?page=1&size=10"
-```
+- KPIs use `/api/dashboard/stats`
+- Tables use `/api/products` + `/api/categories`
+- Aggregates are computed on the client (avg stock, low stock ratios)
 
-#### Filter Products
-```bash
-curl "http://localhost:8080/api/products?search=Smart&minPrice=500&maxPrice=2000"
-```
+## Notes
 
-For more testing examples, see [TESTING.md](TESTING.md)
+- `imageUrl` is required in the backend (`@NotNull`).
+- The frontend currently uses a placeholder image path by default.
+- Settings UI is present but not persisted yet.
 
-## Features
+## Tests
 
-### Product Management
-- ✓ Create, read, update, and delete products
-- ✓ Product pagination and filtering
-- ✓ Search products by name
-- ✓ Filter by price range
-- ✓ Filter by category
-- ✓ Discount management
-- ✓ Stock quantity tracking
-- ✓ Product status management (ACTIVE/INACTIVE)
-
-### Category Management
-- ✓ Create and manage product categories
-- ✓ Update category information
-- ✓ Delete categories
-- ✓ Link products to categories
-
-### Dashboard
-- ✓ View inventory statistics
-- ✓ See product counts
-- ✓ Monitor stock status
-- ✓ View recent products
+See `TESTING.md` for curl samples and API testing instructions.
 
 ## Future Enhancements
 
-- [ ] User authentication and authorization
-- [ ] Advanced inventory analytics
-- [ ] Bulk import/export functionality
-- [ ] Order management system
-- [ ] Supplier management
-- [ ] Stock alerts and notifications
-- [ ] Image upload functionality
-- [ ] Role-based access control (RBAC)
-- [ ] API rate limiting
-- [ ] Comprehensive logging and monitoring
-
-## Database Schema
-
-### Products Table
-- `id` - Primary key
-- `name` - Product name
-- `description` - Product description
-- `price` - Current price
-- `discount` - Discount percentage
-- `quantity` - Stock quantity
-- `status` - Product status (ACTIVE/INACTIVE)
-- `category_id` - Foreign key to categories
-- `image_url` - Product image URL
-- `created_at` - Creation timestamp
-- `updated_at` - Last update timestamp
-
-### Categories Table
-- `id` - Primary key
-- `name` - Category name
-- `description` - Category description
-- `created_at` - Creation timestamp
-- `updated_at` - Last update timestamp
-
-## Development Notes
-
-- The backend uses Spring Boot's embedded Tomcat server
-- All API responses follow RESTful conventions
-- Frontend communicates with backend via fetch API
-- CORS is configured to allow frontend requests
-- Database migrations are handled by Hibernate
-
-## Browser Support
-
-- Chrome/Edge (latest versions)
-- Firefox (latest versions)
-- Safari (latest versions)
-- Mobile browsers (iOS Safari, Chrome Mobile)
-
-## Contributing
-
-Contributions are welcome! Please ensure:
-1. Code follows existing style conventions
-2. All features are properly tested
-3. Documentation is updated
-4. Commit messages are descriptive
-
-## License
-
-This project is open source and available under the MIT License.
-
-## Contact
-
-For questions or suggestions, please reach out to the project maintainers.
-
-## Acknowledgments
-
-- Spring Boot documentation and community
-- MySQL documentation
-- Frontend development best practices
+- Authentication & RBAC
+- File uploads for product images
+- Real settings persistence
+- Inventory analytics charts
+- Bulk import/export
